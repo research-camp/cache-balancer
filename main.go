@@ -9,6 +9,7 @@ import (
 )
 
 const matchValue = 100000
+const loadFactor = 10
 
 func match(a string, b string) int {
 	count := 0
@@ -66,6 +67,8 @@ func (c *Cache) Factor() int {
 
 	avg := 4 * size / len(c.Local) // 4 = log2(count(caches))
 	delta := size * len(c.Local) / avg
+
+	delta = int(math.Max(float64(delta/loadFactor), 1))
 
 	return delta
 }
