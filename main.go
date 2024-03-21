@@ -8,6 +8,7 @@ import (
 	"github.com/go-faker/faker/v4"
 )
 
+// const variables for managing the balancing factors
 const matchValue = 100000
 const loadFactor = 10
 
