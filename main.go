@@ -123,16 +123,18 @@ func generateCaches(number int) []*Cache {
 	return list
 }
 
+func sortFunction(bname string, caches []*Cache) func(int, int) bool {
+	return func(i, j int) bool {
+		return caches[j].Value(bname)*caches[i].Factor() < caches[i].Value(bname)*caches[j].Factor()
+	}
+}
+
 func main() {
 	inputs := generateFiles(100)
 	caches := generateCaches(10)
 
 	for _, upload := range inputs {
-		sort.Slice(caches, func(i, j int) bool {
-			tmp := upload.BinaryName()
-			return caches[j].Value(tmp)*caches[i].Factor() < caches[i].Value(tmp)*caches[j].Factor()
-		})
-
+		sort.Slice(caches, sortFunction(upload.BinaryName(), caches))
 		caches[0].Upload(upload)
 	}
 
