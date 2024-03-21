@@ -130,9 +130,13 @@ func sortFunction(bname string, caches []*Cache) func(int, int) bool {
 }
 
 func main() {
+	// creating inputs
 	inputs := generateFiles(100)
 	caches := generateCaches(10)
 
+	fmt.Printf("Load factor: %d\nMatch value: %d\n\n", loadFactor, matchValue)
+
+	// upload files
 	for _, upload := range inputs {
 		sort.Slice(caches, sortFunction(upload.BinaryName(), caches))
 		caches[0].Upload(upload)
@@ -148,6 +152,7 @@ func main() {
 
 	success := 0
 
+	// download files
 	for _, upload := range inputs {
 		sort.Slice(caches, func(i, j int) bool {
 			tmp := upload.BinaryName()
@@ -159,5 +164,5 @@ func main() {
 		}
 	}
 
-	fmt.Println(success, len(inputs))
+	fmt.Printf("\nResolved %d outof %d (%d%%)\n", success, len(inputs), 100*success/len(inputs))
 }
