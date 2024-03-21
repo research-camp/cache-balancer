@@ -15,19 +15,24 @@ const loadFactor = 10
 func match(a string, b string) int {
 	count := 0
 	limit := int(math.Min(float64(len(a)), float64(len(b))))
+
 	for i := 0; i < limit; i++ {
 		if a[i] == b[i] {
 			count = count + matchValue
 		}
 	}
+
 	return count
 }
 
-func stringToBin(s string) (binString string) {
+func stringToBin(s string) string {
+	binString := ""
+
 	for _, c := range s {
 		binString = fmt.Sprintf("%s%b", binString, c)
 	}
-	return
+
+	return binString
 }
 
 type MockFile struct {
@@ -46,9 +51,11 @@ type Cache struct {
 
 func (c *Cache) ToString() string {
 	size := 0
+
 	for _, file := range c.Local {
 		size += file.Size
 	}
+
 	return fmt.Sprintf("[%s] files: %d, sizes: %d", c.IP, len(c.Local), size)
 }
 
@@ -58,6 +65,7 @@ func (c *Cache) Upload(file *MockFile) {
 
 func (c *Cache) Factor() int {
 	size := 0
+
 	for _, file := range c.Local {
 		size += file.Size
 	}
@@ -90,16 +98,19 @@ func (c *Cache) Download(input string) bool {
 
 func generateFiles(number int) []*MockFile {
 	var list []*MockFile
+
 	for i := 0; i < number; i++ {
 		tmp := new(MockFile)
 		_ = faker.FakeData(&tmp)
 		list = append(list, tmp)
 	}
+
 	return list
 }
 
 func generateCaches(number int) []*Cache {
 	var list []*Cache
+
 	for i := 0; i < number; i++ {
 		tmp := &Cache{}
 		_ = faker.FakeData(&tmp)
@@ -108,6 +119,7 @@ func generateCaches(number int) []*Cache {
 
 		list = append(list, tmp)
 	}
+
 	return list
 }
 
